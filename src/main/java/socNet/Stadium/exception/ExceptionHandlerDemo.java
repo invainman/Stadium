@@ -14,7 +14,7 @@ public class ExceptionHandlerDemo {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleException(MethodArgumentNotValidException ex){
+    public Map<String, String> handleException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult()
                 .getFieldErrors()
@@ -23,16 +23,24 @@ public class ExceptionHandlerDemo {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(UserNotFoundException.class)
-    public Map<String, String> userNotFound(UserNotFoundException ex){
+    @ExceptionHandler(EntityNotFoundException.class)
+    public Map<String, String> entityNotFound(EntityNotFoundException ex) {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
         return error;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public Map<String, String> userAlreadyExists(UserAlreadyExistsException ex){
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+    public Map<String, String> entityAlreadyExists(EntityAlreadyExistsException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return error;
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnauthorizedException.class)
+    public Map<String, String> unauthorized(UnauthorizedException ex) {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
         return error;

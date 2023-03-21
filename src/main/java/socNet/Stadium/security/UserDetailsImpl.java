@@ -16,15 +16,18 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
 
     private Long userId;
-    private String userName;
+
+    private String email;
+
     private String password;
+
     private List<GrantedAuthority> authorities;
 
     public UserDetailsImpl(User user) {
         userId = user.getId();
-        userName = user.getEmail();
+        email = user.getEmail();
         password = user.getPassword();
-        authorities = Arrays.stream(user.getRoles()
+        authorities = Arrays.stream(user.getRole()
                         .split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
@@ -42,7 +45,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package socNet.Stadium.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,25 +14,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import socNet.Stadium.jwt.JwtAuthenticationFilter;
+import socNet.Stadium.jwt.JwtLoginFilter;
 
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig {
 
-    private static final String[] SECURED_URLs = {};
-
     private static final String[] UN_SECURED_URLs = {
-            "/users/**",
-            "/authenticate/**"
+            "/users/registration",
+            "/users/authenticate"
     };
 
-    @Autowired
-    private JwtAuthenticationFilter authenticationFilter;
+    private final JwtLoginFilter authenticationFilter;
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -51,9 +48,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(UN_SECURED_URLs).permitAll().and()
-                .authorizeHttpRequests().requestMatchers(SECURED_URLs)
-                .hasAuthority("ADMIN").anyRequest().authenticated()
+                .requestMatchers(UN_SECURED_URLs).permitAll()
+                .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

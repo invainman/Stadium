@@ -3,7 +3,8 @@ package socNet.Stadium.jwt;
 import lombok.Data;
 
 @Data
-public class JwtAuthenticationRequest {
-    private String username;
+public class JwtLoginRequest {
+
+    private String email;
     private String password;
 }

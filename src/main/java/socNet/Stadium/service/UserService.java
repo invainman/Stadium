@@ -1,22 +1,24 @@
 package socNet.Stadium.service;
 
 import socNet.Stadium.entity.User;
+import socNet.Stadium.jwt.JwtLoginRequest;
 
 import java.util.List;
 
 
-public interface UserService{
+public interface UserService {
 
     User create(User user);
 
-    List<User> getAllUsers();
+    String getTokenForLogin(JwtLoginRequest loginRequest);
 
-    void delete(String email);
+    List<User> getAll();
 
-    User getUser(String email);
+    void deleteByEmail(String email);
+
+    User getByEmail(String email);
 
     User update(User user);
 
-    User getCurrentUser();
-
+    User getCurrent();
 }

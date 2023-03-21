@@ -1,30 +1,28 @@
 package socNet.Stadium.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "users")
+@RequiredArgsConstructor
+@Table(name = "system_user")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    Long id;
 
-    private String firstName;
+    String firstname;
 
-    private String lastName;
+    String lastname;
 
-    private String email;
+    String email;
 
-    private String password;
+    String password;
 
-    private String roles;
+    String role;
 }

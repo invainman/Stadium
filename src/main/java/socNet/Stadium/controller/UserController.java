@@ -1,48 +1,55 @@
 package socNet.Stadium.controller;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import socNet.Stadium.entity.User;
+import socNet.Stadium.jwt.JwtLoginRequest;
 import socNet.Stadium.service.UserService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(){
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.FOUND);
-    }
-    @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user){
-        return ResponseEntity.ok(userService.create(user));
+    public ResponseEntity<List<User>> getAll() {
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<User> getByEmail(@PathVariable("email") String email){
-        return  ResponseEntity.ok(userService.getUser(email));
+    @PostMapping("/registration")
+    public ResponseEntity<User> create(@RequestBody User user) {
+        return new ResponseEntity<>(userService.create(user), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{email}")
-    public ResponseEntity<Void> delete(@PathVariable("email") String email){
-        userService.delete(email);
-        return ResponseEntity.ok().build();
+    @PostMapping("/authenticate")
+    public ResponseEntity<String> getTokenForLogin(@RequestBody JwtLoginRequest loginRequest) {
+        return new ResponseEntity<>(userService.getTokenForLogin(loginRequest), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<User> update(@RequestBody User user){
-        return ResponseEntity.ok(userService.update(user));
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getByEmail(@PathVariable String email) {
+        return new ResponseEntity<>(userService.getByEmail(email), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/email/{email}")
+    public ResponseEntity<Void> deleteByEmail(@PathVariable String email) {
+        userService.deleteByEmail(email);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping()
+    public ResponseEntity<User> update(@RequestBody User user) {
+        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 
     @GetMapping("/current")
     public ResponseEntity<User> getById() {
-        return ResponseEntity.ok(userService.getCurrentUser());
+        return new ResponseEntity<>(userService.getCurrent(), HttpStatus.OK);
     }
 }
