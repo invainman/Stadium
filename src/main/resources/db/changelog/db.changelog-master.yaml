@@ -15,16 +15,6 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: firstname
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: lastname
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
                   name: email
                   type: varchar(255)
                   constraints:
@@ -37,3 +27,37 @@ databaseChangeLog:
               - column:
                   name: role
                   type: varchar(20)
+              - column:
+                  name: profile_id
+                  type: BIGINT
+
+        - createTable:
+            tableName: profile
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: firstname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lastname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: about_me
+                  type: varchar(255)
+
+        - addForeignKeyConstraint:
+            baseColumnNames: profile_id
+            baseTableName: system_user
+            constraintName: system_user_profile
+            referencedColumnNames: id
+            referencedTableName: profile

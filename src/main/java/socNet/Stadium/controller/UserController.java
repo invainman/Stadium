@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<User> getById() {
+    public ResponseEntity<User> getCurrent() {
         return new ResponseEntity<>(userService.getCurrent(), HttpStatus.OK);
     }
 }

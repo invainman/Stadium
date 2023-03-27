@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.findByEmail(user.getEmail()).ifPresent(theUser ->
         {
-            throw new EntityAlreadyExistsException(String.format("A user with email %s already exists", user.getEmail()));
+            throw new EntityAlreadyExistsException(String.format("User with email %s already exists", user.getEmail()));
         });
 
         user.setRole("USER");
@@ -48,19 +48,22 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteByEmail(String email) {
+
         userRepository.deleteByEmail(email);
     }
 
     @Override
     public User getByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("A user with email %s not found", email)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with email %s not found", email)));
     }
 
     @Override
     public User update(User user) {
-        user.setRole(user.getRole());
-        return userRepository.save(user);
+        User currentUser = getCurrent();
+        currentUser.setEmail(user.getEmail());
+        currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(currentUser);
     }
 
     @Override
